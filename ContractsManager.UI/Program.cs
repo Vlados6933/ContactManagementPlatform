@@ -21,14 +21,6 @@ namespace ContactsManager.UI
 
             builder.Services.ConfigureSrevise(builder.Configuration);
 
-            if (builder.Environment.IsEnvironment("Test") == false)
-            {
-                builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                {
-                    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-                });
-            }
-
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
@@ -63,11 +55,22 @@ namespace ContactsManager.UI
                 Rotativa.AspNetCore.RotativaConfiguration.Setup("wwwroot", wkhtmltopdfRelativePath: "Rotativa");
             }
 
+            app.UseHsts();
+            app.UseHttpsRedirection();
             app.UseSerilogRequestLogging();
             app.UseHttpLogging();
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.MapControllers();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "areas",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}");
+            });
 
             app.Run();
         }

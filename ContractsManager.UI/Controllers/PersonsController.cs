@@ -23,9 +23,8 @@ namespace ContactsManager.UI.Controllers
         private readonly ICountriesService _countriesService = countriesService;
         private readonly ILogger<PersonsController> _logger = logger;
 
-
-        [Route("[action]")]
         [Route("/")]
+        [Route("[action]")]
         [TypeFilter<PersonsListActionFilter>(Order = 4)]
         //[TypeFilter<ResponseHeaderActionFilter>(Arguments = new object[] { "MyKey-From-Action", "MyValue-From-Action", 1 }, Order = 1)]
         [ResponseHeaderFilterFactory("MyKey-From-Action", "MyValue-From-Action", 1)] 
@@ -50,8 +49,8 @@ namespace ContactsManager.UI.Controllers
             return View(sortedPersons);
         }
 
-        [Route("[action]")]
         [HttpGet]
+        [Route("[action]")]
         public async Task<IActionResult> Create()
         {
             List<CountryResponse> countries = await _countriesService.GetAllCountries();

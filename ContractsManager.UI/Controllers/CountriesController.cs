@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ContactsManager.UI.Controllers
 {
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class CountriesController : Controller
     {
         private readonly ICountriesService _countriesService;
@@ -13,14 +13,12 @@ namespace ContactsManager.UI.Controllers
             _countriesService = countriesService;
         }
 
-        [Route("[action]")]
         public IActionResult UploadFromExcel()
         {
             return View();
         }
 
         [HttpPost]
-        [Route("[action]")]
         public async Task<IActionResult> UploadFromExcel(IFormFile excelFile)
         {
             if (excelFile == null || excelFile.Length == 0)
